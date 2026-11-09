@@ -3,10 +3,7 @@ package moutawakil.latifa.demoescqrsaxor.commands.controllers;
 
 import moutawakil.latifa.demoescqrsaxor.commands.commands.AddAccountCommand;
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import moutawakil.latifa.demoescqrsaxor.dto.AddNewAccountRequestDTO;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -29,5 +26,10 @@ public class AccountCommandController {
                 request.currency()
         ));
         return response;
+    }
+
+    @ExceptionHandler(Exception.class)
+    public String exceptionHandler(Exception ex) {
+        return ex.getMessage();
     }
 }
