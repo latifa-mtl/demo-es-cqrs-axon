@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: 'postgres:latest'
+    image: 'postgres:17'
     environment:
       - 'POSTGRES_DB=es-accounts_db'
       - 'POSTGRES_PASSWORD=1234'

@@ -1,4 +1,4 @@
-package moutawakil.latifa.demoescqrsaxor.dto;
+package moutawakil.latifa.demoescqrsaxor.commands.dto;
 
 public record AddNewAccountRequestDTO(double initialBalance, String currency) {
 }

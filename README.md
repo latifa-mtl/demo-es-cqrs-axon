@@ -4,3 +4,15 @@ Swagger-methode post  /commands/accounts/add
 
 h2-console table domain event entry
 ![img_1.png](img_1.png)
+
+test data connection postgres es-accounts_db
+![img_2.png](img_2.png)
+
+test /commans/accounts/events/{accountsId} donne les donnes format json
+![img_3.png](img_3.png)
+
+2 events are created after creating an account test by swagger
+![img_4.png](img_4.png)
+
+Test credit method 
+![img_5.png](img_5.png)
