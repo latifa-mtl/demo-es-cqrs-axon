@@ -3,14 +3,19 @@ package moutawakil.latifa.demoescqrsaxor.query.controllers;
 
 import moutawakil.latifa.demoescqrsaxor.query.dtos.AccountStatementResponseDTO;
 import moutawakil.latifa.demoescqrsaxor.query.entities.Account;
+import moutawakil.latifa.demoescqrsaxor.query.entities.Operation;
 import moutawakil.latifa.demoescqrsaxor.query.queries.GetAccountStatementQuery;
 import moutawakil.latifa.demoescqrsaxor.query.queries.GetAllAccountsQuery;
+import moutawakil.latifa.demoescqrsaxor.query.queries.WatchEventQuery;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
+import org.axonframework.queryhandling.SubscriptionQueryResult;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -37,6 +42,15 @@ public class AccountQueryController {
         return queryGateway.query(new GetAccountStatementQuery(accountId),ResponseTypes.instanceOf(AccountStatementResponseDTO.class));
     }
 
+    @GetMapping(value = "/watch/{accountId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Operation> watch(@PathVariable String accountId){
+        SubscriptionQueryResult<Operation, Operation> result =
+                queryGateway.subscriptionQuery(new WatchEventQuery(accountId),
+                ResponseTypes.instanceOf(Operation.class),
+                ResponseTypes.instanceOf(Operation.class)
+        );
+        return result.initialResult().concatWith(result.updates());
+    }
 
 
 }

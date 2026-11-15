@@ -20,10 +20,12 @@ import org.springframework.stereotype.Service;
 public class AccountEventHandler {
     private AccountRepository accountRepository;
     private OperationRepository operationRepository;
+    private QueryUpdateEmitter queryUpdateEmitter;
 
-    public AccountEventHandler(AccountRepository accountRepository, OperationRepository operationRepository) {
+    public AccountEventHandler(AccountRepository accountRepository, OperationRepository operationRepository, QueryUpdateEmitter queryUpdateEmitter) {
         this.accountRepository = accountRepository;
         this.operationRepository = operationRepository;
+        this.queryUpdateEmitter = queryUpdateEmitter;
     }
 
 
@@ -71,6 +73,7 @@ public class AccountEventHandler {
         operationRepository.save(operation);
         account.setBalance(account.getBalance()-operation.getAmount());
         accountRepository.save(account);
+        queryUpdateEmitter.emit(e->true, operation);
     }
     @EventHandler
     public void on(AccountCreditedEvent event, EventMessage eventMessage){
@@ -86,7 +89,7 @@ public class AccountEventHandler {
         operationRepository.save(operation);
         account.setBalance(account.getBalance()+operation.getAmount());
         accountRepository.save(account);
-
+        queryUpdateEmitter.emit(e->true, operation);
     }
 
 
