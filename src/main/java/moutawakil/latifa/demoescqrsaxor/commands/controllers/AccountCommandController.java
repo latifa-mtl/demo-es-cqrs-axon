@@ -4,8 +4,10 @@ package moutawakil.latifa.demoescqrsaxor.commands.controllers;
 import moutawakil.latifa.demoescqrsaxor.commands.commands.AddAccountCommand;
 import moutawakil.latifa.demoescqrsaxor.commands.commands.CreditAccountCommand;
 import moutawakil.latifa.demoescqrsaxor.commands.commands.DebitAccountCommand;
+import moutawakil.latifa.demoescqrsaxor.commands.commands.UpdateAccountStatusCommand;
 import moutawakil.latifa.demoescqrsaxor.commands.dto.CreditAccountRequestDTO;
 import moutawakil.latifa.demoescqrsaxor.commands.dto.DebitAccountRequestDTO;
+import moutawakil.latifa.demoescqrsaxor.commands.dto.UpdateAccountStatusRequestDTO;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +56,16 @@ public class AccountCommandController {
                 request.currency()
         ));
         return result;
+    }
+
+    @PutMapping("/updateStatus")
+    public CompletableFuture<String> updateAccountStatus(@RequestBody UpdateAccountStatusRequestDTO request){
+        CompletableFuture<String> result = this.commandGateway.send(new UpdateAccountStatusCommand(
+                request.accountId(),
+                request.status()
+        ));
+        return result;
+
     }
 
     @ExceptionHandler(Exception.class)
