@@ -19,3 +19,6 @@ Test credit method
 
 Test de la synchronization entre BDD decriture et lecture by "/query/accounts/all"
 ![img_6.png](img_6.png)
+
+Test account statement by "/query/accounts/statement/{accountId}"
+![img_7.png](img_7.png)

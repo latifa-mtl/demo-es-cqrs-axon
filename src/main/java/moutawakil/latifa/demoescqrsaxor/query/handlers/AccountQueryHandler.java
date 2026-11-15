@@ -1,7 +1,9 @@
 package moutawakil.latifa.demoescqrsaxor.query.handlers;
 
+import moutawakil.latifa.demoescqrsaxor.query.dtos.AccountStatementResponseDTO;
 import moutawakil.latifa.demoescqrsaxor.query.entities.Account;
 import moutawakil.latifa.demoescqrsaxor.query.entities.Operation;
+import moutawakil.latifa.demoescqrsaxor.query.queries.GetAccountStatementQuery;
 import moutawakil.latifa.demoescqrsaxor.query.queries.GetAllAccountsQuery;
 import moutawakil.latifa.demoescqrsaxor.query.repository.AccountRepository;
 import moutawakil.latifa.demoescqrsaxor.query.repository.OperationRepository;
@@ -22,6 +24,13 @@ public class AccountQueryHandler {
     @QueryHandler
     public List<Account> on(GetAllAccountsQuery query){
         return accountRepository.findAll();
+    }
+
+    @QueryHandler
+    public AccountStatementResponseDTO on(GetAccountStatementQuery query){
+        Account account = accountRepository.findById(query.getAccountId()).get();
+        List<Operation> operations = operationRepository.findByAccountId(query.getAccountId());
+        return new AccountStatementResponseDTO(account, operations);
     }
 
 }
