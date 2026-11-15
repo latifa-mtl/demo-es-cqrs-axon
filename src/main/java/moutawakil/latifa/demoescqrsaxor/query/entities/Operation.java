@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import moutawakil.latifa.demoescqrsaxor.enums.OperationType;
 
+import java.time.Instant;
 import java.util.Date;
 
 
@@ -11,10 +12,11 @@ import java.util.Date;
 public class Operation {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date date;
+    private Instant date;
     private double amount;
     @Enumerated(EnumType.STRING)
     private OperationType type;
+    private String currency;
     @ManyToOne
     private Account account;
 }

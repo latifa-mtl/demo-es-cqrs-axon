@@ -71,7 +71,7 @@ public class AccountAggregate {
     @EventSourcingHandler
     public void on(AccountCreditedEvent event) {
         log.info("########################### Account Credited Event occured ##########################");
-        this.accountId = event.getId();
+        this.accountId = event.getAccountId();
         this.balance += event.getAmount();
     }
 
