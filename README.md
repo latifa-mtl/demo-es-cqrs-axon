@@ -22,3 +22,6 @@ Test de la synchronization entre BDD decriture et lecture by "/query/accounts/al
 
 Test account statement by "/query/accounts/statement/{accountId}"
 ![img_7.png](img_7.png)
+
+Interface axon servor avec exemples des events
+![img_8.png](img_8.png)
