@@ -15,7 +15,7 @@ import org.axonframework.queryhandling.QueryUpdateEmitter;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 @Slf4j
 public class AccountEventHandler {
     private AccountRepository accountRepository;

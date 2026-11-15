@@ -16,3 +16,6 @@ test /commans/accounts/events/{accountsId} donne les donnes format json
 
 Test credit method 
 ![img_5.png](img_5.png)
+
+Test de la synchronization entre BDD decriture et lecture by "/query/accounts/all"
+![img_6.png](img_6.png)
