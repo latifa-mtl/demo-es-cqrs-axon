@@ -3,10 +3,12 @@ package moutawakil.latifa.demoescqrsaxor.commands.aggregates;
 import lombok.extern.slf4j.Slf4j;
 import moutawakil.latifa.demoescqrsaxor.commands.commands.AddAccountCommand;
 import moutawakil.latifa.demoescqrsaxor.commands.commands.CreditAccountCommand;
+import moutawakil.latifa.demoescqrsaxor.commands.commands.DebitAccountCommand;
 import moutawakil.latifa.demoescqrsaxor.enums.AccountStatus;
 import moutawakil.latifa.demoescqrsaxor.events.AccountActivatedEvent;
 import moutawakil.latifa.demoescqrsaxor.events.AccountCreatedEvent;
 import moutawakil.latifa.demoescqrsaxor.events.AccountCreditedEvent;
+import moutawakil.latifa.demoescqrsaxor.events.AccountDebitedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
@@ -73,5 +75,25 @@ public class AccountAggregate {
         log.info("########################### Account Credited Event occured ##########################");
         this.accountId = event.getId();
         this.balance += event.getAmount();
+    }
+
+    @CommandHandler
+    public void handler(DebitAccountCommand command) {
+        log.info("########################### Debit Account command received ##########################");
+        if (!this.status.equals(AccountStatus.ACTIVATED)) throw  new RuntimeException("This account can not be debited because of the account is not activated. The current status is "+status);
+        if (balance < command.getAmount()) throw new IllegalArgumentException("Insufficient balance");
+        if (command.getAmount() <= 0) throw new IllegalArgumentException("The amount to credit must be positive");
+        AggregateLifecycle.apply(new AccountDebitedEvent(
+                command.getId(),
+                command.getAmount(),
+                command.getCurrency()
+        ));
+    }
+
+    @EventSourcingHandler
+    public void on(AccountDebitedEvent event) {
+        log.info("########################### Account Debited Event occured ##########################");
+        this.accountId = event.getAccountId();
+        this.balance -= event.getAmount();
     }
 }

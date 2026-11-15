@@ -3,7 +3,9 @@ package moutawakil.latifa.demoescqrsaxor.commands.controllers;
 
 import moutawakil.latifa.demoescqrsaxor.commands.commands.AddAccountCommand;
 import moutawakil.latifa.demoescqrsaxor.commands.commands.CreditAccountCommand;
+import moutawakil.latifa.demoescqrsaxor.commands.commands.DebitAccountCommand;
 import moutawakil.latifa.demoescqrsaxor.commands.dto.CreditAccountRequestDTO;
+import moutawakil.latifa.demoescqrsaxor.commands.dto.DebitAccountRequestDTO;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +39,16 @@ public class AccountCommandController {
     @PostMapping("/credit")
     public CompletableFuture<String> creditAccount(@RequestBody CreditAccountRequestDTO request){
         CompletableFuture<String> result = this.commandGateway.send(new CreditAccountCommand(
+                request.accountId(),
+                request.amount(),
+                request.currency()
+        ));
+        return result;
+    }
+
+    @PostMapping("/debit")
+    public CompletableFuture<String> debitAccount(@RequestBody DebitAccountRequestDTO request){
+        CompletableFuture<String> result = this.commandGateway.send(new DebitAccountCommand(
                 request.accountId(),
                 request.amount(),
                 request.currency()
